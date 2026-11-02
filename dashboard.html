@@ -1,0 +1,8 @@
+{% extends "base.html" %}{% block breadcrumb %}OVERVIEW{% endblock %}{% block content %}
+<h1>Good to see you, Admin.</h1><p class="page-subtitle">A calm, clear view of your Saaric Élan sales workspace.</p>
+<div class="cards">
+<a class="card" href="{{ url_for('items') }}"><b>{{ items|length }}</b><span>Products in catalog</span></a>
+<a class="card" href="{{ url_for('billing') }}"><b>＋</b><span>Create a new invoice</span></a>
+<a class="card" href="{{ url_for('bills') }}"><b>{{ bills|length }}</b><span>Recent invoices · View history</span></a>
+</div>
+<div class="panel"><h2>Recent invoices</h2><div class="table-wrap"><table><thead><tr><th>Invoice no.</th><th>Customer</th><th>Date</th><th>Total</th><th>Details</th></tr></thead><tbody>{% for b in bills %}<tr><td>{{ b.bill_no }}</td><td>{{ b.customer_name }}</td><td>{{ b.created_at }}</td><td>₹{{ "%.2f"|format(b.total) }}</td><td><a href="{{ url_for('view_bill',bill_id=b.id) }}">View invoice ↗</a></td></tr>{% else %}<tr><td colspan="5">No invoices yet. Your first sale starts here.</td></tr>{% endfor %}</tbody></table></div></div>{% endblock %}
