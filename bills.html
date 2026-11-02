@@ -1,0 +1,12 @@
+{% extends "base.html" %}{% block breadcrumb %}BILL HISTORY{% endblock %}{% block content %}
+<h1>Bill history</h1><p class="page-subtitle">Search invoices by customer name, phone, invoice number, product code or product name. Open any bill to print or save it as PDF.</p>
+<div class="panel" style="margin-bottom:18px;padding:18px">
+  <form method="get" action="{{ url_for('bills') }}" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+    <input name="q" value="{{ q }}" placeholder="Search customer / product code / product name / bill no." style="flex:1;min-width:220px;padding:12px;border-radius:10px;border:1px solid #ddd;background:#fff;color:#222">
+    <button type="submit">Search</button>{% if q %}<a class="secondary linkbtn" href="{{ url_for('bills') }}">Clear</a>{% endif %}
+    <a class="secondary linkbtn" href="{{ url_for('export_bills') }}">Download all bills (Excel)</a>
+  </form>
+</div>
+<div class="panel"><div class="table-wrap"><table><thead><tr><th>Invoice no.</th><th>Customer</th><th>Phone</th><th>Date</th><th>Total</th><th>Action</th></tr></thead><tbody>
+{% for b in bills %}<tr><td>{{ b.bill_no }}</td><td>{{ b.customer_name }}</td><td>{{ b.phone }}</td><td>{{ b.created_at }}</td><td>₹{{ "%.2f"|format(b.total) }}</td><td><a href="{{ url_for('view_bill',bill_id=b.id) }}">Open / Print ↗</a></td></tr>{% else %}<tr><td colspan="6">No matching bills found.</td></tr>{% endfor %}
+</tbody></table></div></div>{% endblock %}

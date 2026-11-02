@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{% block title %}Saaric Élan · Billing Studio{% endblock %}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar">
+    <a href="{{ url_for('dashboard') }}" class="brand">
+      <img src="{{ url_for('static', filename='saaric-logo.jpeg') }}" alt="Saaric Élan logo" onerror="this.style.display='none'">
+      <span class="brand-word">SAARIC<small>É L A N</small></span>
+    </a>
+    <div class="side-caption">WORKSPACE</div>
+    {% if session.get('admin') %}
+    <nav class="side-nav">
+      <a href="{{ url_for('dashboard') }}" class="{% if request.endpoint == 'dashboard' %}active{% endif %}"><span>⌂</span> Overview</a>
+      <a href="{{ url_for('items') }}" class="{% if request.endpoint in ['items','delete_item'] %}active{% endif %}"><span>◇</span> Product catalog</a>
+      <a href="{{ url_for('billing') }}" class="{% if request.endpoint == 'billing' %}active{% endif %}"><span>＋</span> Create invoice</a>
+      <a href="{{ url_for('bills') }}" class="{% if request.endpoint in ['bills','view_bill'] %}active{% endif %}"><span>▤</span> Bill history</a>
+    </nav>
+    <div class="sidebar-bottom"><div class="admin-chip"><span class="avatar">A</span><span><b>Admin</b><small>Saaric Élan</small></span></div><a class="logout" href="{{ url_for('logout') }}">Sign out ↗</a></div>
+    {% endif %}
+  </aside>
+  <div class="main-shell">
+    <header class="topbar"><span class="eyebrow">SAARIC ÉLAN / {% block breadcrumb %}BILLING STUDIO{% endblock %}</span><span class="status"><i></i> Local workspace</span></header>
+    <main>
+      {% with messages = get_flashed_messages() %}{% if messages %}<div class="flash">{% for message in messages %}<p>{{ message }}</p>{% endfor %}</div>{% endif %}{% endwith %}
+      {% block content %}{% endblock %}
+    </main>
+    <footer>SAARIC ÉLAN <span>·</span> Contact 9452771312 <span>·</span> WhatsApp 962807824 <span>·</span> Instagram @SAARIC7</footer>
+  </div>
+</div>
+</body></html>
